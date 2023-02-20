@@ -3,9 +3,16 @@ const ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+//Accumulate milli-second values(starts at 0)
+let timeToNextZombie = 0;
+//A value in milli-seconds, resets and triggers next zombie when time is reached
+let zombieInterval = 500;
+//Holds value of timestamp from previous loop
+let lastTime = 0;
+
 let zombies = [];
 class Zombie {
-    //Creates one blank object everytime called with assigned properties
+    //Creates one blank object everytime its called with assigned properties
     constructor() {
         this.width = 100;
         this.height = 50;
@@ -27,13 +34,21 @@ class Zombie {
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
-    const zombie = new Zombie();
 //Animation loop
 function animate (timestamp){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    zombie.update();
-    zombie.draw();
+    //A value that calculates frames in milli-seconds
+    let deltatime =  timestamp - lastTime;
+    lastTime = timestamp;
+    timeToNextZombie += deltatime;
+    //Pushes a new zombie when 0 reaches 500 milli-seconds in deltatime
+    if (timeToNextZombie > zombieInterval){
+        zombies.push(new Zombie());
+        timeToNextZombie = 0;
+        console.log(zombies);
+    };
+
     //Creates endless animation loop
     requestAnimationFrame(animate);
 }
-animate();
+animate(0);
