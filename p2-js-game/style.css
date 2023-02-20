@@ -1,15 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+
 body {
-    background: gray;
+    background: linear-gradient(#635985,#443C68,#393053,#18122B);
     width: 100vw;
     height: 100vh;
     overflow: hidden;
 }
 
 #canvas {
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    background-image: url(Images/Background/Street.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    left: 200px;
+    top: 100px;
+    width: 80%;
     height: 80%;
 }
