@@ -21,9 +21,9 @@ class Zombie {
         //Horizontal spawn position, random number between 0 and canvas height
         this.y = Math.random() * (canvas.height - this.height);
         //Random horizontal speed
-        this.directionX = Math.random() * 5 + 3;
+        this.directionX = Math.random() * 0.5 + 0.5;
         //Random vertical speed
-        this.directionY = Math.random() * 5 - 2.5;
+        this.directionY = Math.random() * 0.5 - 0.5;
     }
     //Moves zombies around
     update(){
@@ -45,9 +45,11 @@ function animate (timestamp){
     if (timeToNextZombie > zombieInterval){
         zombies.push(new Zombie());
         timeToNextZombie = 0;
-        console.log(zombies);
     };
-
+    //Array literals and spread operator(...)
+    //Expands zombies array into another array, spawns zombies periodically
+    [...zombies].forEach(object => object.update());
+    [...zombies].forEach(object => object.draw());
     //Creates endless animation loop
     requestAnimationFrame(animate);
 }
