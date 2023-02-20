@@ -40,6 +40,10 @@ class Zombie {
     }
     //Moves zombies
     update(deltatime){
+        //Prevents enemies from going out of bounds in y axis
+        if (this.y < 0 || this.y > canvas.height - this.height) {
+            this.directionY = this.directionY * -1;
+        }
         this.x -= this.directionX;
         this.y += this.directionY;
         if (this.x < 0 - this.width) this.deleteZombie = true;
