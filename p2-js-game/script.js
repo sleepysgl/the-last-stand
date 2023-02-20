@@ -41,6 +41,7 @@ class Zombie {
     //Moves zombies
     update(deltatime){
         this.x -= this.directionX;
+        this.y += this.directionY;
         if (this.x < 0 - this.width) this.deleteZombie = true;
         //Interval of frames per milli-second
         this.timeSinceWalk += deltatime;
