@@ -30,9 +30,12 @@ class Zombie {
         this.deleteZombie = false;
         this.image = new Image();
         this.image.src = 'Images/Zombie/Walk.png';
-        this.frame = 8;
+        //Random gets last frame of enemy img since it's inverted
+        this.frame = 4;
+        //Starts frame animation from right to left
         this.maxFrame = 1;
         this.timeSinceWalk = 0;
+        //Random animation speed of zombie walk
         this.walkInterval = Math.random() * 75 + 75 
     }
     //Moves zombies
@@ -41,6 +44,7 @@ class Zombie {
         if (this.x < 0 - this.width) this.deleteZombie = true;
         //Interval of frames per milli-second
         this.timeSinceWalk += deltatime;
+        //Loops thru frames of img
         if (this.timeSinceWalk > this.walkInterval){
             if (this.frame < this.maxFrame) this.frame = 4;
             else this.frame--;
