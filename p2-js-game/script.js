@@ -6,7 +6,7 @@ canvas.height = window.innerHeight;
 //Accumulate milli-second values(starts at 0)
 let timeToNextZombie = 0;
 //A value in milli-seconds, resets and triggers next zombie when time is reached
-let zombieInterval = 500;
+let zombieInterval = 1000;
 //Holds value of timestamp from previous loop
 let lastTime = 0;
 
@@ -24,19 +24,19 @@ class Zombie {
         //Horizontal spawn position, random number between 0 and canvas height
         this.y = Math.random() * (canvas.height - this.height);
         //Random horizontal speed
-        this.directionX = Math.random() * 0.5 + 0.5;
+        this.directionX = Math.random() * 0.2 + 0.2;
         //Random vertical speed
         this.directionY = Math.random() * 0.5 - 0.5;
         this.deleteZombie = false;
         this.image = new Image();
-        this.image.src = 'Images/Zombie/Walk.png';
+        this.image.src = 'Images/Zombie/Walk1.png';
         //Random gets last frame of enemy img since it's inverted
         this.frame = 4;
         //Starts frame animation from right to left
         this.maxFrame = 1;
         this.timeSinceWalk = 0;
         //Random animation speed of zombie walk
-        this.walkInterval = Math.random() * 75 + 75 
+        this.walkInterval = Math.random() * 100 + 100 
     }
     //Moves zombies
     update(deltatime){
@@ -64,6 +64,7 @@ class Zombie {
             this.zombieWidth, this.zombieHeight, this.x, this.y, this.width, this.height);
     }
 }
+
 //Animation loop
 function animate (timestamp){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
