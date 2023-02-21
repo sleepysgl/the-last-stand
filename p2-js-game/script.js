@@ -1,7 +1,10 @@
-const canvas = document.getElementById('canvas')
-const ctx = canvas.getContext('2d')
+const gameContainer = document.querySelector('.game-container')
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+let score = 0;
+ctx.font = '50px Impact'
 
 //Accumulate milli-second values(starts at 0)
 let timeToNextZombie = 0;
@@ -148,6 +151,18 @@ class ZombieThree {
             this.zombieWidth, this.zombieHeight, this.x, this.y, this.width, this.height);
     }
 }
+
+function drawScore() {
+    ctx.fillStyle = 'orange';
+    ctx.fillText('Score: ' + score, 46, 75);
+    ctx.fillStyle = 'white';
+    ctx.fillText('Score: ' + score, 50, 75);
+}
+
+window.addEventListener('click', function(e){
+    console.log(e.x, e.y);
+})
+
 //Animation loop
 function animate (timestamp){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -162,10 +177,11 @@ function animate (timestamp){
         zombiesTwo.push(new ZombieTwo());
         timeToNextZombie = 0;
         zombiesThree.push(new ZombieThree());
-        timetoNextZombie = 0;
+        timeToNextZombie = 0;
     }
     //Array literals and spread operator(...)
     //Cycles thru zombies[] and triggers update()
+    drawScore();
     [...zombies, ...zombiesTwo, ...zombiesThree].forEach(object => object.update(deltatime));
     [...zombies, ...zombiesTwo, ...zombiesThree].forEach(object => object.draw());
     //Takes zombies[] and deletes it, replaces it with the same contents in zombies[] but only with deleteZombie property set to false
