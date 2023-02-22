@@ -7,9 +7,10 @@ const collision = document.getElementById('collision');
 const collisionCtx = collision.getContext('2d');
 collision.width = window.innerWidth;
 collision.height = window.innerHeight;
+const restartBtn = document.getElementById('restartBtn')
 
 let score = 0;
-let gameOver = false;
+let gameOver = true;
 ctx.font = '50px Impact'
 
 //Accumulate milli-second values(starts at 0)
@@ -233,6 +234,8 @@ function drawGameOver() {
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
     ctx.fillText('You killed' + ' ' + score + ' ' + 'zombies', 965, 400);
+    restartBtn.style.display = 'block';
+
 }
 
 window.addEventListener('click', function(e){
