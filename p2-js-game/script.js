@@ -188,8 +188,36 @@ function drawScore() {
 }
 
 window.addEventListener('click', function(e){
-    const detectPixelColor = ctx.getImageData(e.x, e.y, 1, 1);
+    const detectPixelColor = collisionCtx.getImageData(e.x, e.y, 1, 1);
     console.log(detectPixelColor);
+    //Variable that gets the array of rgb data array
+    const pixelColor = detectPixelColor.data;
+    /*Condition that if randomColors is detected with pixelColor, 
+    the zombie clicked will be deleted and score will increase by 1*/
+    zombies.forEach(object => {
+        if (object.randomColors[0] === pixelColor[0]
+        &&  object.randomColors[1] === pixelColor[1]
+        &&  object.randomColors[2] === pixelColor[2]){
+            object.deleteZombie = true;
+            score++;
+        }
+    });
+    zombiesTwo.forEach(object => {
+        if (object.randomColors[0] === pixelColor[0]
+        &&  object.randomColors[1] === pixelColor[1]
+        &&  object.randomColors[2] === pixelColor[2]){
+                object.deleteZombie = true;
+                score++;
+        }
+    });
+    zombiesThree.forEach(object => {
+        if (object.randomColors[0] === pixelColor[0]
+        &&  object.randomColors[1] === pixelColor[1]
+        &&  object.randomColors[2] === pixelColor[2]){
+                object.deleteZombie = true;
+                score++;
+        }
+    });
 });
 
 //Animation loop
@@ -204,9 +232,6 @@ function animate (timestamp){
     if (timeToNextZombie > zombieInterval){
         zombies.push(new Zombie());
         timeToNextZombie = 0;
-        zombies.sort(function(a,b){
-            return a.width - b.width
-        })
         zombiesTwo.push(new ZombieTwo());
         timeToNextZombie = 0;
         zombiesThree.push(new ZombieThree());
