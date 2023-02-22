@@ -18,7 +18,7 @@ ctx.font = '50px Impact'
 //Accumulate milli-second values(starts at 0)
 let timeToNextZombie = 0;
 //A value in milli-seconds, resets and triggers next zombie when time is reached
-let zombieInterval = 1000;
+let zombieInterval = 500;
 //Holds value of timestamp from previous loop
 let lastTime = 0;
 
@@ -226,10 +226,10 @@ function drawScore() {
 function drawGameOver() {
     ctx.textAlign = 'center';
     ctx.fillStyle = 'orange';
-    ctx.fillText(`You're dead. The future of humanity is doomed.`, 962, 242);
+    ctx.fillText(`You're dead. Is that all you got?`, 962, 242);
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
-    ctx.fillText(`You're dead. The future of humanity is doomed.`, 965, 243);
+    ctx.fillText(`You're dead. Is that all you got?`, 965, 243);
     ctx.textAlign = 'center';
     ctx.fillStyle = 'orange';
     ctx.fillText('You killed' + ' ' + score + ' ' + 'zombies', 962, 398);

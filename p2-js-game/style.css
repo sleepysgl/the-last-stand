@@ -38,49 +38,41 @@ body {
 
 #restartBtn {
     display: none;
-    position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background: rgb(226, 175, 6);
-    color: white;
-    border: none;
-    padding: 20px;
-    font-size: 25px;
-    border-radius: 5px;
     cursor: pointer;
 }
 
 #title {
-    position: absolute;
     width: 50%;
     height: 50%;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background: rgba(255, 255, 255, 0.275);
-    color:  rgb(226, 175, 6);
-    border: none;
-    padding: 20px;
-    font-size: 50px;
-    border-radius: 5px;
+    color:  black;
 }
 
 #startBtn {
-    position: absolute;
     width: 200px;
     top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background: rgb(226, 175, 6);
-    color: white;
-    border: none;
-    padding: 20px;
-    font-size: 25px;
-    border-radius: 5px;
     cursor: pointer;
 }
 
-p {
-    font-size: 15px;
+h6, 
+p,
+#startBtn,
+#restartBtn {
+    color: white;
+}
+
+#title,
+#startBtn,
+#restartBtn {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    font-size: 50px;
+    border-radius: 5px;
+    border: none;
 }
