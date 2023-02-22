@@ -14,7 +14,7 @@ ctx.font = '50px Impact'
 //Accumulate milli-second values(starts at 0)
 let timeToNextZombie = 0;
 //A value in milli-seconds, resets and triggers next zombie when time is reached
-let zombieInterval = 2000;
+let zombieInterval = 1000;
 //Holds value of timestamp from previous loop
 let lastTime = 0;
 
@@ -32,10 +32,10 @@ class Zombie {
         //Horizontal spawn position, random number between 0 and canvas height
         this.y = Math.random() * (canvas.height - this.height);
         //Random horizontal speed
-        this.directionX = Math.random() * 0.2 + 0.2;
+        this.directionX = Math.random() * 0.5 + 0.5;
         //Random vertical speed
         this.directionY = Math.random() * 0.5 - 0.5;
-        this.deleteZombie = false;
+        this.deleteThis = false;
         this.image = new Image();
         this.image.src = 'Images/Zombies/Walk1.png';
         //Gets last frame of enemy img since it's inverted
@@ -62,7 +62,7 @@ class Zombie {
         }
         this.x -= this.directionX;
         this.y += this.directionY;
-        if (this.x < 0 - this.width) this.deleteZombie = true;
+        if (this.x < 0 - this.width) this.deleteThis = true;
         //Interval of frames per milli-second
         this.timeSinceWalk += deltatime;
         //Loops thru frames of img
@@ -92,9 +92,9 @@ class ZombieTwo {
         this.height = this.zombieHeight/1;
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
-        this.directionX = Math.random() * 0.3 + 0.3;
+        this.directionX = Math.random() * 1 + 1;
         this.directionY = Math.random() * 0.5 - 0.5;
-        this.deleteZombie = false;
+        this.deleteThis = false;
         this.image = new Image();
         this.image.src = 'Images/Zombies/Run2.png';
         this.frame = 8;
@@ -114,7 +114,7 @@ class ZombieTwo {
         }
         this.x -= this.directionX;
         this.y += this.directionY;
-        if (this.x < 0 - this.width) this.deleteZombie = true;
+        if (this.x < 0 - this.width) this.deleteThis = true;
         this.timeSinceWalk += deltatime;
         if (this.timeSinceWalk > this.walkInterval){
             if (this.frame < this.maxFrame) this.frame = 4;
@@ -140,9 +140,9 @@ class ZombieThree {
         this.height = this.zombieHeight/1;
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
-        this.directionX = Math.random() * 0.6 + 0.6;
+        this.directionX = Math.random() * 1.5 + 1.5;
         this.directionY = Math.random() * 0.5 - 0.5;
-        this.deleteZombie = false;
+        this.deleteThis = false;
         this.image = new Image();
         this.image.src = 'Images/Zombies/Run3.png';
         this.frame = 8;
@@ -162,7 +162,7 @@ class ZombieThree {
         }
         this.x -= this.directionX;
         this.y += this.directionY;
-        if (this.x < 0 - this.width) this.deleteZombie = true;
+        if (this.x < 0 - this.width) this.deleteThis = true;
         this.timeSinceWalk += deltatime;
         if (this.timeSinceWalk > this.walkInterval){
             if (this.frame < this.maxFrame) this.frame = 7;
@@ -172,12 +172,45 @@ class ZombieThree {
         }
     }
     draw(){
+
         collisionCtx.fillStyle = this.color;
         collisionCtx.fillRect(this.x, this.y, this.width, this.height);
         //source.i, source.x, source.y, source.w, source.h, dest.x, dest.y, dest.w, dest.h)
         ctx.drawImage(this.image, this.frame * this.zombieWidth, 0, 
             this.zombieWidth, this.zombieHeight, this.x, this.y, this.width, this.height);
     }
+}
+
+let explosions = [];
+class Explosion {
+    constructor(x, y, size){
+        this.image = new Image();
+        this.image.src = 'Images/Explosions/Explosion.png';
+        this.explosionWidth = 200;
+        this.explosionHeight = 179;
+        this.size = size;
+        this.x = x;
+        this.y = y;
+        this.frame = 0;
+        this.sound = new Audio();
+        this.sound.src = 'Sounds/Explosion/Explosion.wav';
+        this.timeSinceLastFrame = 0;
+        this.frameInterval = 200;
+        this.deleteThis = true;
+    }
+    update(deltatime){
+        if (this.frame === 0) this.sound.play();
+        this.timeSinceLastFrame += deltatime;
+        if (this.timeSinceLastFrame > this.frameInterval){
+            this.frame++;
+            this.lastSinceLastFrame = 0;
+            if (this.frame > 5) this.deleteThis = false;
+         }false
+    }
+    draw(){
+        ctx.drawImage(this.image, this.frame * this.explosionWidth, 0, 
+        this.explosionWidth, this.explosionHeight, this.x, this.y, this.size, this.size);
+    };
 }
 
 function drawScore() {
@@ -198,24 +231,30 @@ window.addEventListener('click', function(e){
         if (object.randomColors[0] === pixelColor[0]
         &&  object.randomColors[1] === pixelColor[1]
         &&  object.randomColors[2] === pixelColor[2]){
-            object.deleteZombie = true;
+            object.deleteThis = true;
             score++;
+            explosions.push(new Explosion(object.x, object.y, object.width));
+            console.log(explosions);
         }
     });
     zombiesTwo.forEach(object => {
         if (object.randomColors[0] === pixelColor[0]
         &&  object.randomColors[1] === pixelColor[1]
         &&  object.randomColors[2] === pixelColor[2]){
-                object.deleteZombie = true;
-                score++;
+            object.deleteThis = true;
+            score++;
+            explosions.push(new Explosion(object.x, object.y, object.width));
+            console.log(explosions);
         }
     });
     zombiesThree.forEach(object => {
         if (object.randomColors[0] === pixelColor[0]
         &&  object.randomColors[1] === pixelColor[1]
         &&  object.randomColors[2] === pixelColor[2]){
-                object.deleteZombie = true;
-                score++;
+            object.deleteThis = true;
+            score++;
+            explosions.push(new Explosion(object.x, object.y, object.width));
+            console.log(explosions);
         }
     });
 });
@@ -240,11 +279,19 @@ function animate (timestamp){
     //Array literals and spread operator(...)
     //Cycles thru zombies[] and triggers update()
     drawScore();
-    [...zombies, ...zombiesTwo, ...zombiesThree].forEach(object => object.update(deltatime));
-    [...zombies, ...zombiesTwo, ...zombiesThree].forEach(object => object.draw());
-    //Takes zombies[] and deletes it, replaces it with the same contents in zombies[] but only with deleteZombie property set to false
-    zombies = zombies.filter(object => !object.deleteZombie);
-    zombiesTwo = zombiesTwo.filter(object => !object.deleteZombie);
+    [...zombies, 
+     ...zombiesTwo, 
+     ...zombiesThree,
+     ...explosions].forEach(object => object.update(deltatime));
+    [...zombies, 
+     ...zombiesTwo, 
+     ...zombiesThree,
+     ...explosions].forEach(object => object.draw());
+    //Takes zombies[] and deletes it, replaces it with the same contents in zombies[] but only with deleteThis property set to false
+    zombies = zombies.filter(object => !object.deleteThis);
+    zombiesTwo = zombiesTwo.filter(object => !object.deleteThis);
+    zombiesThree = zombiesThree.filter(object => !object.deleteThis);
+    explosions = explosions.filter(object => !object.deleteThis);
     //console.log(zombies);
     //Creates endless animation loop
     requestAnimationFrame(animate);
