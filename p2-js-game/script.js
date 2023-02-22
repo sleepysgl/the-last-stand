@@ -75,8 +75,8 @@ class Zombie {
     }
     //Represents a single zombie object
     draw(){
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        collisionCtx.fillStyle = this.color;
+        collisionCtx.fillRect(this.x, this.y, this.width, this.height);
         //source.i, source.x, source.y, source.w, source.h, dest.x, dest.y, dest.w, dest.h)
         ctx.drawImage(this.image, this.frame * this.zombieWidth, 0, 
             this.zombieWidth, this.zombieHeight, this.x, this.y, this.width, this.height);
@@ -124,8 +124,8 @@ class ZombieTwo {
         }
     }
     draw(){
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        collisionCtx.fillStyle = this.color;
+        collisionCtx.fillRect(this.x, this.y, this.width, this.height);
         //source.i, source.x, source.y, source.w, source.h, dest.x, dest.y, dest.w, dest.h)
         ctx.drawImage(this.image, this.frame * this.zombieWidth, 0, 
             this.zombieWidth, this.zombieHeight, this.x, this.y, this.width, this.height);
@@ -172,8 +172,8 @@ class ZombieThree {
         }
     }
     draw(){
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        collisionCtx.fillStyle = this.color;
+        collisionCtx.fillRect(this.x, this.y, this.width, this.height);
         //source.i, source.x, source.y, source.w, source.h, dest.x, dest.y, dest.w, dest.h)
         ctx.drawImage(this.image, this.frame * this.zombieWidth, 0, 
             this.zombieWidth, this.zombieHeight, this.x, this.y, this.width, this.height);
@@ -195,6 +195,7 @@ window.addEventListener('click', function(e){
 //Animation loop
 function animate (timestamp){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    collisionCtx.clearRect(0, 0, canvas.width, canvas.height);
     //A value that calculates frames in milli-seconds
     let deltatime =  timestamp - lastTime;
     lastTime = timestamp;
@@ -203,6 +204,9 @@ function animate (timestamp){
     if (timeToNextZombie > zombieInterval){
         zombies.push(new Zombie());
         timeToNextZombie = 0;
+        zombies.sort(function(a,b){
+            return a.width - b.width
+        })
         zombiesTwo.push(new ZombieTwo());
         timeToNextZombie = 0;
         zombiesThree.push(new ZombieThree());
