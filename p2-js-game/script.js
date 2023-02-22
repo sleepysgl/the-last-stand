@@ -7,10 +7,12 @@ const collision = document.getElementById('collision');
 const collisionCtx = collision.getContext('2d');
 collision.width = window.innerWidth;
 collision.height = window.innerHeight;
-const restartBtn = document.getElementById('restartBtn')
+const restartBtn = document.getElementById('restartBtn');
+const title = document.getElementById('title');
+const startBtn = document.getElementById('startBtn');
 
 let score = 0;
-let gameOver = true;
+let gameOver = false;
 ctx.font = '50px Impact'
 
 //Accumulate milli-second values(starts at 0)
@@ -188,8 +190,8 @@ class Explosion {
     constructor(x, y, size){
         this.image = new Image();
         this.image.src = 'Images/Explosions/Explosion.png';
-        this.explosionWidth = 200;
-        this.explosionHeight = 179;
+        this.width = 128;
+        this.height = 128;
         this.size = size;
         this.x = x;
         this.y = y;
@@ -197,19 +199,19 @@ class Explosion {
         this.sound = new Audio();
         this.sound.src = 'Sounds/Explosion/Explosion.wav';
         this.timeSinceLastFrame = 0;
-        this.frameInterval = 200;
+        this.frameInterval = 500;
         this.deleteThis = true;
     }
-    update(deltatime){
+    update(deltatime) {
         if (this.frame === 0) this.sound.play();
         this.timeSinceLastFrame += deltatime;
-        if (this.timeSinceLastFrame > this.frameInterval){
-            this.frame++;
+        if (this.timeSinceLastFrame < this.frameInterval){
+            this.frame--;
             this.lastSinceLastFrame = 0;
-            if (this.frame > 5) this.deleteThis = false;
+            if (this.frame > 4) this.deleteThis = false;
          }false
     }
-    draw(){
+    draw() {
         ctx.drawImage(this.image, this.frame * this.explosionWidth, 0, 
         this.explosionWidth, this.explosionHeight, this.x, this.y, this.size, this.size);
     };
@@ -224,10 +226,10 @@ function drawScore() {
 function drawGameOver() {
     ctx.textAlign = 'center';
     ctx.fillStyle = 'orange';
-    ctx.fillText(`You're dead. Better luck next time lods.`, 962, 242);
+    ctx.fillText(`You're dead. The future of humanity is doomed.`, 962, 242);
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
-    ctx.fillText(`You're dead. Better luck next time lods.`, 965, 243);
+    ctx.fillText(`You're dead. The future of humanity is doomed.`, 965, 243);
     ctx.textAlign = 'center';
     ctx.fillStyle = 'orange';
     ctx.fillText('You killed' + ' ' + score + ' ' + 'zombies', 962, 398);
@@ -277,6 +279,14 @@ window.addEventListener('click', function(e){
     });
 });
 
+restartBtn.addEventListener('click', ()=>{
+    location.reload();
+})
+startBtn.addEventListener('click', ()=>{
+    animate(0);
+    title.style.display = 'none';
+})
+
 //Animation loop
 function animate (timestamp){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -315,4 +325,3 @@ function animate (timestamp){
     if (!gameOver) requestAnimationFrame(animate);
     else drawGameOver();
 }
-animate(0);
