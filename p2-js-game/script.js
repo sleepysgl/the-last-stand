@@ -3,6 +3,11 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+const collision = document.getElementById('collision');
+const collisionCtx = collision.getContext('2d');
+collision.width = window.innerWidth;
+collision.height = window.innerHeight;
+
 let score = 0;
 ctx.font = '50px Impact'
 
@@ -39,7 +44,15 @@ class Zombie {
         this.maxFrame = 1;
         this.timeSinceWalk = 0;
         //Random animation speed of zombie walk
-        this.walkInterval = Math.random() * 100 + 100 
+        this.walkInterval = Math.random() * 100 + 100
+        //Assigns random colors as a hitbox/collision in each zombie (rgb)
+        this.randomColors = [Math.floor(Math.random() * 255), 
+                             Math.floor(Math.random() * 255),
+                             Math.floor(Math.random() * 255)];
+        //Adds red[0] green[1] blue[2]
+        this.color = 'rgb(' + this.randomColors[0] 
+                      + ',' + this.randomColors[1]
+                      + ',' + this.randomColors[2] + ')';
     }
     //Moves zombies
     update(deltatime){
@@ -62,7 +75,8 @@ class Zombie {
     }
     //Represents a single zombie object
     draw(){
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
         //source.i, source.x, source.y, source.w, source.h, dest.x, dest.y, dest.w, dest.h)
         ctx.drawImage(this.image, this.frame * this.zombieWidth, 0, 
             this.zombieWidth, this.zombieHeight, this.x, this.y, this.width, this.height);
@@ -82,11 +96,17 @@ class ZombieTwo {
         this.directionY = Math.random() * 0.5 - 0.5;
         this.deleteZombie = false;
         this.image = new Image();
-        this.image.src = 'Images/Zombies/Walk2.png';
+        this.image.src = 'Images/Zombies/Run2.png';
         this.frame = 8;
         this.maxFrame = 1;
         this.timeSinceWalk = 0;
         this.walkInterval = Math.random() * 100 + 100 
+        this.randomColors = [Math.floor(Math.random() * 255), 
+                             Math.floor(Math.random() * 255),
+                             Math.floor(Math.random() * 255)];
+        this.color = 'rgb(' + this.randomColors[0] 
+                      + ',' + this.randomColors[1]
+                      + ',' + this.randomColors[2] + ')';
     }
     update(deltatime){
         if (this.y < 0 || this.y > canvas.height - this.height) {
@@ -104,7 +124,8 @@ class ZombieTwo {
         }
     }
     draw(){
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
         //source.i, source.x, source.y, source.w, source.h, dest.x, dest.y, dest.w, dest.h)
         ctx.drawImage(this.image, this.frame * this.zombieWidth, 0, 
             this.zombieWidth, this.zombieHeight, this.x, this.y, this.width, this.height);
@@ -127,7 +148,13 @@ class ZombieThree {
         this.frame = 8;
         this.maxFrame = 1;
         this.timeSinceWalk = 0;
-        this.walkInterval = Math.random() * 100 + 100 
+        this.walkInterval = Math.random() * 100 + 100
+        this.randomColors = [Math.floor(Math.random() * 255), 
+                             Math.floor(Math.random() * 255),
+                             Math.floor(Math.random() * 255)];
+        this.color = 'rgb(' + this.randomColors[0] 
+                      + ',' + this.randomColors[1]
+                      + ',' + this.randomColors[2] + ')';
     }
     update(deltatime){
         if (this.y < 0 || this.y > canvas.height - this.height) {
@@ -145,7 +172,8 @@ class ZombieThree {
         }
     }
     draw(){
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
         //source.i, source.x, source.y, source.w, source.h, dest.x, dest.y, dest.w, dest.h)
         ctx.drawImage(this.image, this.frame * this.zombieWidth, 0, 
             this.zombieWidth, this.zombieHeight, this.x, this.y, this.width, this.height);
@@ -160,8 +188,9 @@ function drawScore() {
 }
 
 window.addEventListener('click', function(e){
-    console.log(e.x, e.y);
-})
+    const detectPixelColor = ctx.getImageData(e.x, e.y, 1, 1);
+    console.log(detectPixelColor);
+});
 
 //Animation loop
 function animate (timestamp){
