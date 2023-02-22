@@ -9,6 +9,7 @@ collision.width = window.innerWidth;
 collision.height = window.innerHeight;
 
 let score = 0;
+let gameOver = false;
 ctx.font = '50px Impact'
 
 //Accumulate milli-second values(starts at 0)
@@ -70,8 +71,8 @@ class Zombie {
             if (this.frame < this.maxFrame) this.frame = 4;
             else this.frame--;
             this.timeSinceWalk = 0;
-            
         }
+        if (this.x < 0 - this.width) gameOver = true;
     }
     //Represents a single zombie object
     draw(){
@@ -120,8 +121,8 @@ class ZombieTwo {
             if (this.frame < this.maxFrame) this.frame = 4;
             else this.frame--;
             this.timeSinceWalk = 0;
-            
         }
+        if (this.x < 0 - this.width) gameOver = true;
     }
     draw(){
         collisionCtx.fillStyle = this.color;
@@ -168,8 +169,8 @@ class ZombieThree {
             if (this.frame < this.maxFrame) this.frame = 7;
             else this.frame--;
             this.timeSinceWalk = 0;
-            
         }
+        if (this.x < 0 - this.width) gameOver = true;
     }
     draw(){
 
@@ -218,6 +219,20 @@ function drawScore() {
     ctx.fillText('Score: ' + score, 46, 75);
     ctx.fillStyle = 'white';
     ctx.fillText('Score: ' + score, 50, 75);
+}
+function drawGameOver() {
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'orange';
+    ctx.fillText(`You're dead. Better luck next time lods.`, 962, 242);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'white';
+    ctx.fillText(`You're dead. Better luck next time lods.`, 965, 243);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'orange';
+    ctx.fillText('You killed' + ' ' + score + ' ' + 'zombies', 962, 398);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'white';
+    ctx.fillText('You killed' + ' ' + score + ' ' + 'zombies', 965, 400);
 }
 
 window.addEventListener('click', function(e){
@@ -294,6 +309,7 @@ function animate (timestamp){
     explosions = explosions.filter(object => !object.deleteThis);
     //console.log(zombies);
     //Creates endless animation loop
-    requestAnimationFrame(animate);
+    if (!gameOver) requestAnimationFrame(animate);
+    else drawGameOver();
 }
 animate(0);
