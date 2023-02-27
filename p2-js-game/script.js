@@ -15,10 +15,18 @@ let score = 0;
 let gameOver = false;
 ctx.font = '50px Impact'
 
+/*function init(){
+    let score = 0;
+    let zombies = [];
+    let zombiesTwo = [];
+    let zombiesThree = [];
+    let explosions = [];
+}*/
+
 //Accumulate milli-second values(starts at 0)
 let timeToNextZombie = 0;
 //A value in milli-seconds, resets and triggers next zombie when time is reached
-let zombieInterval = 500;
+let zombieInterval = 1000;
 //Holds value of timestamp from previous loop
 let lastTime = 0;
 
@@ -64,6 +72,7 @@ class Zombie {
         if (this.y < 0 || this.y > canvas.height - this.height) {
             this.directionY = this.directionY * -1;
         }
+        //Function of zombie's speed on x and y axis
         this.x -= this.directionX;
         this.y += this.directionY;
         if (this.x < 0 - this.width) this.deleteThis = true;
@@ -81,7 +90,7 @@ class Zombie {
     draw(){
         collisionCtx.fillStyle = this.color;
         collisionCtx.fillRect(this.x, this.y, this.width, this.height);
-        //source.i, source.x, source.y, source.w, source.h, dest.x, dest.y, dest.w, dest.h)
+        //source.i, source.x, source.y, source.w, source.h, dest.x, dest.y, dest.w, dest.h
         ctx.drawImage(this.image, this.frame * this.zombieWidth, 0, 
             this.zombieWidth, this.zombieHeight, this.x, this.y, this.width, this.height);
     }
@@ -295,7 +304,7 @@ function animate (timestamp){
     let deltatime =  timestamp - lastTime;
     lastTime = timestamp;
     timeToNextZombie += deltatime;
-    //Pushes a new zombie when 0 reaches 500 milli-seconds in deltatime
+    //Pushes a new zombie when 0 reaches zombieInterval in deltatime
     if (timeToNextZombie > zombieInterval){
         zombies.push(new Zombie());
         timeToNextZombie = 0;
@@ -305,7 +314,7 @@ function animate (timestamp){
         timeToNextZombie = 0;
     }
     //Array literals and spread operator(...)
-    //Cycles thru zombies[] and triggers update()
+    //Cycles thru zombies[],explosions[] and triggers their update()
     drawScore();
     [...zombies, 
      ...zombiesTwo, 
