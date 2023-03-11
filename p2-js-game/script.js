@@ -15,18 +15,10 @@ let score = 0;
 let gameOver = false;
 ctx.font = '50px Impact'
 
-/*function init(){
-    let score = 0;
-    let zombies = [];
-    let zombiesTwo = [];
-    let zombiesThree = [];
-    let explosions = [];
-}*/
-
 //Accumulate milli-second values(starts at 0)
 let timeToNextZombie = 0;
 //A value in milli-seconds, resets and triggers next zombie when time is reached
-let zombieInterval = 1000;
+let zombieInterval = 500;
 //Holds value of timestamp from previous loop
 let lastTime = 0;
 
@@ -35,10 +27,10 @@ class Zombie {
     //Creates one blank object everytime its called with assigned properties
     constructor() {
         //Zombie frame
-        this.zombieWidth = 96;
+        this.zombieWidth = 96; //768/8
         this.zombieHeight = 96;
-        this.width = this.zombieWidth/1;
-        this.height = this.zombieHeight/1;
+        this.width = this.zombieWidth;
+        this.height = this.zombieHeight;
         //Spawn from right to left 
         this.x = canvas.width;
         //Horizontal spawn position, random number between 0 and canvas height
@@ -70,7 +62,7 @@ class Zombie {
     update(deltatime){
         //Prevents enemies from going out of bounds in y axis
         if (this.y < 0 || this.y > canvas.height - this.height) {
-            this.directionY = this.directionY * -1;
+            this.directionY = this.directionY *-1;
         }
         //Function of zombie's speed on x and y axis
         this.x -= this.directionX;
@@ -101,8 +93,8 @@ class ZombieTwo {
     constructor (){
         this.zombieWidth = 96;
         this.zombieHeight = 96;
-        this.width = this.zombieWidth/1;
-        this.height = this.zombieHeight/1;
+        this.width = this.zombieWidth;
+        this.height = this.zombieHeight;
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
         this.directionX = Math.random() * 1 + 1;
@@ -149,8 +141,8 @@ class ZombieThree {
     constructor (){
         this.zombieWidth = 96;
         this.zombieHeight = 96;
-        this.width = this.zombieWidth/1;
-        this.height = this.zombieHeight/1;
+        this.width = this.zombieWidth;
+        this.height = this.zombieHeight;
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
         this.directionX = Math.random() * 1.5 + 1.5;
@@ -235,16 +227,13 @@ function drawScore() {
 function drawGameOver() {
     ctx.textAlign = 'center';
     ctx.fillStyle = 'orange';
-    ctx.fillText(`You're dead. Is that all you got?`, 962, 242);
-    ctx.textAlign = 'center';
+    ctx.fillText(`You're dead. Is that all you got?`, innerWidth / 2, (innerHeight/2) - 80);
     ctx.fillStyle = 'white';
-    ctx.fillText(`You're dead. Is that all you got?`, 965, 243);
-    ctx.textAlign = 'center';
+    ctx.fillText(`You're dead. Is that all you got?`, (innerWidth / 2) + 2, (innerHeight / 2) - 78);
     ctx.fillStyle = 'orange';
-    ctx.fillText('You killed' + ' ' + score + ' ' + 'zombies', 962, 398);
-    ctx.textAlign = 'center';
+    ctx.fillText('You killed' + ' ' + score + ' ' + 'zombies', innerWidth / 2, (innerHeight / 2) - 140);
     ctx.fillStyle = 'white';
-    ctx.fillText('You killed' + ' ' + score + ' ' + 'zombies', 965, 400);
+    ctx.fillText('You killed' + ' ' + score + ' ' + 'zombies', (innerWidth / 2) + 2, (innerHeight / 2) - 138);
     restartBtn.style.display = 'block';
 
 }
